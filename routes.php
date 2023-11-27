@@ -10,5 +10,8 @@ $router->get('/note', 'controllers/notes/show.php');
 // We declare a delete request for our single note and we call a destroy controller
 $router->delete('/note', 'controllers/notes/destroy.php');
 
+$router->get('/note/edit', 'controllers/notes/edit.php');
+$router->patch('/note', 'controllers/notes/update.php');
+
 $router->get('/notes/create', 'controllers/notes/create.php');
 $router->post('/notes/create', 'controllers/notes/store.php');

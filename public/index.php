@@ -13,6 +13,9 @@ spl_autoload_register(function ($class) {
     require base_path("{$class}.php");
 });
 
+// We require our bootstrap file
+require base_path('bootstrap.php');
+
 // We declare our router after we required it and then we fetch also all the routes from the routes.php file
 $router = new \Core\Router();
 $routes = require base_path('routes.php');
