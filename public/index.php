@@ -1,5 +1,8 @@
 <?php
 
+// We start our session
+session_start();
+
 // We create a global constant of the base path
 const BASE_PATH = __DIR__.'/../';
 
