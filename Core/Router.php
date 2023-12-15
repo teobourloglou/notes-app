@@ -2,6 +2,10 @@
 // We declare that our Router class is under the Core namespace
 namespace Core;
 
+use Core\Middleware\Auth;
+use Core\Middleware\Guest;
+use Core\Middleware\Middleware;
+
 class Router
 {
     // There is no reason for our routes to be accessed from anywhere else so we prefer to keep them protected or private
@@ -14,34 +18,46 @@ class Router
         $this->routes[] = [
             'uri' => $uri,
             'controller' => $controller,
-            'method' => $method
+            'method' => $method,
+            'middleware' => null
         ];
+
+        // In order to be able to chain other methods we need to return something
+        return $this;
     }
 
     // We create a function for each request type
     public function get($uri, $controller)
     {
-        $this->add('GET', $uri, $controller);
+        return $this->add('GET', $uri, $controller);
     }
 
     public function post($uri, $controller)
     {
-        $this->add('POST', $uri, $controller);
+        return $this->add('POST', $uri, $controller);
     }
 
     public function delete($uri, $controller)
     {
-        $this->add('DELETE', $uri, $controller);
+        return $this->add('DELETE', $uri, $controller);
     }
 
     public function patch($uri, $controller)
     {
-        $this->add('PATCH', $uri, $controller);
+        return $this->add('PATCH', $uri, $controller);
     }
 
     public function put($uri, $controller)
     {
-        $this->add('PUT', $uri, $controller);
+        return $this->add('PUT', $uri, $controller);
+    }
+
+    // This function works as a constraint for our routes
+    public function only($key) {
+        // We set the middleware of the last route visited to the key
+        $this->routes[array_key_last($this->routes)]['middleware'] = $key;
+
+        return $this;
     }
 
     // Our route function takes a uri and a method parameter. It loops through our routes array and if the uri and the method are identical it calls the corresponding controller
@@ -50,6 +66,9 @@ class Router
     {
         foreach ($this->routes as $route) {
             if ($route['uri'] === $uri && $route['method'] === strtoupper($method)) {
+                // Apply the middleware
+                Middleware::resolve($route['middleware']);
+
                 return require base_path($route['controller']);
             }
         }
