@@ -9,7 +9,9 @@
           </div>
           <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
             <a href="/" class=" <?= urlIs('/') ? 'border-orange-300 text-neutral-900' : 'border-transparent text-neutral-500 hover:border-orange-300 hover:text-neutral-700'?> inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium" aria-current="page">Home</a>
-            <a href="/notes" class=" <?= urlIs('/notes') ? 'border-orange-300 text-neutral-900' : 'border-transparent text-neutral-500 hover:border-orange-300 hover:text-neutral-700'?> inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium" aria-current="page">Notes</a>
+            <?php if ($_SESSION['user'] ?? false) : ?>
+              <a href="/notes" class=" <?= urlIs('/notes') ? 'border-orange-300 text-neutral-900' : 'border-transparent text-neutral-500 hover:border-orange-300 hover:text-neutral-700'?> inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium" aria-current="page">Notes</a>
+              <?php endif ?>
             <a href="/about" class=" <?= urlIs('/about') ? 'border-orange-300 text-neutral-900' : 'border-transparent text-neutral-500 hover:border-orange-300 hover:text-neutral-700'?> inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium" aria-current="page">About</a>
             <a href="/contact" class=" <?= urlIs('/contact') ? 'border-orange-300 text-neutral-900' : 'border-transparent text-neutral-500 hover:border-orange-300 hover:text-neutral-700'?> inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium" aria-current="page">Contact</a>
           </div>
@@ -25,11 +27,16 @@
 
           <!-- Profile dropdown -->
           <div class="relative ml-3">
-            <div>
+            <div class="flex justify-center gap-2">
                 <?php if ($_SESSION['user'] ?? false) : ?>
                   <img class="h-8 w-8 rounded-full" src="https://avatars.githubusercontent.com/u/73954851?v=4" alt="">
+                  <form class="flex items-center" method="POST" action="/session">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    <button class="text-neutral-500 hover:text-neutral-700 inline-flex items-center px-1 pt-1 text-sm border-none bg-transparent font-medium">Log out</button>
+                  </form>
                 <?php else : ?>
-                  <a href="/register">Register</a>
+                  <a href="/register" class="text-neutral-500 hover:text-neutral-700 inline-flex items-center px-1 pt-1 text-sm font-medium" aria-current="page">Register</a>
+                  <a href="/login" class="text-neutral-500 hover:text-neutral-700 inline-flex items-center px-1 pt-1 text-sm font-medium" aria-current="page">Login</a>
                 <?php endif ?>
             </div>
 
