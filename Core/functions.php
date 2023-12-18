@@ -47,23 +47,7 @@ function view($path, $attributes = [])
     require base_path('views/' . $path);
 }
 
-function login($user) {
-    // mark that the user has logged in
-    $_SESSION['user'] = [
-        'email' => $user['email']
-    ];
-
-    // We do this to be 100% security safe.
-    session_regenerate_id(true);
-}
-
-function logout() {
-    // Clear out the superglobal
-    $_SESSION = [];
-    // Destroy the session file
-    session_destroy();
-
-    // We delete the cookie that is saved in the browser session.
-    $params = session_get_cookie_params();
-    setcookie('PHPSESSID', '', time() - 3600, $params['path'], $params['domain'], $params['httponly']);
+function redirect($path) {
+    header("location: {$path}");
+    exit();
 }
