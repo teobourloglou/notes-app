@@ -2,6 +2,7 @@
 
 // Login the user if the credentials match
 use Core\Authenticator;
+use Core\Session;
 use Http\Forms\LoginForm;
 
 
@@ -22,8 +23,7 @@ if ($form->validate($email, $password)) {
     $form->error('email', 'No matching account found for that email address and password');
 }
 
+// If the validation or authentication fails then we flash the validation errors to the session and then redirect:
+Session::flash('errors', $form->errors());
 
-// If not then we return the error.
-return view('session/create.view.php', [
-    'errors' => $form->errors()
-]);
+return redirect('/login');
