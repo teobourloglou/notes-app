@@ -25,5 +25,8 @@ if ($form->validate($email, $password)) {
 
 // If the validation or authentication fails then we flash the validation errors to the session and then redirect:
 Session::flash('errors', $form->errors());
+Session::flash('old', [
+    'email' => $_POST['email']
+]);
 
 return redirect('/login');
