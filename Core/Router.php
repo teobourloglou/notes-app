@@ -76,6 +76,10 @@ class Router
         $this->abort();
     }
 
+    public function previousUrl() {
+        return $_SERVER['HTTP_REFERER'];
+    }
+
     // In the worst case of a route not founded we need an abort function that will load a view for every not existing route. We set 404 as our default response code but we can always call pass a different value
     protected function abort($code = 404)
     {
